@@ -1,5 +1,3 @@
-if true then return {} end -- WARN: REMOVE THIS LINE TO ACTIVATE THIS FILE
-
 -- Customize Mason
 
 ---@type LazySpec
@@ -11,16 +9,30 @@ return {
     opts = {
       -- Make sure to use the names found in `:Mason`
       ensure_installed = {
-        -- install language servers
+        -- Lua
         "lua-language-server",
-
-        -- install formatters
         "stylua",
 
-        -- install debuggers
+        -- TypeScript / JavaScript
+        "typescript-language-server",
+        "prettier",
+        "eslint-lsp",
+
+        -- Python
+        "pyright",
+        "ruff",
         "debugpy",
 
-        -- install any other package
+        -- C/C++
+        "clangd",
+        "clang-format",
+        "codelldb",
+
+        -- CMake / Meson
+        "cmake-language-server",
+        "neocmakelsp",
+
+        -- General
         "tree-sitter-cli",
       },
     },
