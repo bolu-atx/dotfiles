@@ -1,0 +1,1 @@
+- When drafting commits or pull request, DO NOT mention that Claude drafted it, avoid using Claude in Git commit messages

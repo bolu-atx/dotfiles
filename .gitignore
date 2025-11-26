@@ -1,0 +1,10 @@
+# OS files
+.DS_Store
+*.swp
+*.swo
+
+# Neovim
+nvim/lazy-lock.json
+
+# Local overrides (if any)
+*.local

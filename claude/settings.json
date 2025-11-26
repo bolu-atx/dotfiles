@@ -1,0 +1,7 @@
+{
+  "alwaysThinkingEnabled": true,
+  "statusLine": {
+    "type": "command",
+    "command": "bash -c 'input=$(cat); cwd=$(echo \"$input\" | jq -r \".workspace.current_dir\"); model=$(echo \"$input\" | jq -r \".model.display_name\"); transcript=$(echo \"$input\" | jq -r \".transcript_path\"); cd \"$cwd\" 2>/dev/null; branch=$(git -c core.commitGraph=false -c gc.auto=0 branch --show-current 2>/dev/null || echo \"no-git\"); if [ -f \"$transcript\" ]; then size=$(wc -c < \"$transcript\" 2>/dev/null || echo \"0\"); tokens=$((size / 4)); pct=$((tokens * 100 / 200000)); [ $pct -gt 100 ] && pct=100; ctx=\"${pct}%\"; else ctx=\"N/A\"; fi; printf \"\\033[36m🤖 %s\\033[0m │ \\033[33m📁 %-30s\\033[0m │ \\033[32m🌿 %s\\033[0m │ \\033[35m📊 %s\\033[0m\" \"$model\" \"${cwd/#$HOME/~}\" \"$branch\" \"$ctx\"'"
+  }
+}
