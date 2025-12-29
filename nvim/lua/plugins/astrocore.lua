@@ -1,5 +1,7 @@
 -- AstroCore provides a central place to modify mappings, vim options, autocommands, and more!
 -- Configuration documentation can be found with `:h astrocore`
+-- NOTE: We highly recommend setting up the Lua Language Server (`:LspInstall lua_ls`)
+--       as this provides autocomplete and documentation while editing
 
 ---@type LazySpec
 return {
@@ -8,60 +10,57 @@ return {
   opts = {
     -- Configure core features of AstroNvim
     features = {
-      large_buf = { size = 1024 * 500, lines = 20000 }, -- handle larger files
-      autopairs = true,
-      cmp = true,
-      diagnostics = { virtual_text = true, virtual_lines = false },
-      highlighturl = true,
-      notifications = true,
+      large_buf = { size = 1024 * 256, lines = 10000 }, -- set global limits for large files for disabling features like treesitter
+      autopairs = true, -- enable autopairs at start
+      cmp = true, -- enable completion at start
+      diagnostics = { virtual_text = true, virtual_lines = false }, -- diagnostic settings on startup
+      highlighturl = true, -- highlight URLs at start
+      notifications = true, -- enable notifications at start
     },
-    -- Diagnostics configuration
+    -- Diagnostics configuration (for vim.diagnostics.config({...})) when diagnostics are on
     diagnostics = {
       virtual_text = true,
       underline = true,
-      severity_sort = true,
     },
-    -- Filetypes for meson and other project files
+    -- passed to `vim.filetype.add`
     filetypes = {
+      -- see `:h vim.filetype.add` for usage
       extension = {
-        wrap = "ini", -- meson wrap files
+        foo = "fooscript",
       },
       filename = {
-        ["meson.build"] = "meson",
-        ["meson_options.txt"] = "meson",
-        [".clang-format"] = "yaml",
-        [".clang-tidy"] = "yaml",
-        ["pyrightconfig.json"] = "jsonc",
-        ["tsconfig.json"] = "jsonc",
+        [".foorc"] = "fooscript",
+      },
+      pattern = {
+        [".*/etc/foo/.*"] = "fooscript",
       },
     },
-    -- vim options
+    -- vim options can be configured here
     options = {
-      opt = {
-        relativenumber = true,
-        number = true,
-        spell = false,
-        signcolumn = "yes",
-        wrap = false,
-        scrolloff = 8, -- keep 8 lines visible above/below cursor
-        sidescrolloff = 8,
-        tabstop = 4,
-        shiftwidth = 4,
-        expandtab = true,
-        smartindent = true,
-        undofile = true, -- persistent undo
-        updatetime = 250, -- faster CursorHold events
-        timeoutlen = 300, -- faster which-key popup
+      opt = { -- vim.opt.<key>
+        relativenumber = true, -- sets vim.opt.relativenumber
+        number = true, -- sets vim.opt.number
+             spell = false, -- sets vim.opt.spell
+        signcolumn = "yes", -- sets vim.opt.signcolumn to yes
+        wrap = false, -- sets vim.opt.wrap
       },
-      g = {},
+      g = { -- vim.g.<key>
+        -- configure global vim variables (vim.g)
+        -- NOTE: `mapleader` and `maplocalleader` must be set in the AstroNvim opts or before `lazy.setup`
+      },
     },
-    -- Mappings
+    -- Mappings can be configured through AstroCore as well.
+    -- NOTE: keycodes follow the casing in the vimdocs. For example, `<Leader>` must be capitalized
     mappings = {
+      -- first key is the mode
       n = {
-        -- Buffer navigation
+        -- second key is the lefthand side of the map
+
+        -- navigate buffer tabs
         ["]b"] = { function() require("astrocore.buffer").nav(vim.v.count1) end, desc = "Next buffer" },
         ["[b"] = { function() require("astrocore.buffer").nav(-vim.v.count1) end, desc = "Previous buffer" },
 
+        -- mappings seen under group name "Buffer"
         ["<Leader>bd"] = {
           function()
             require("astroui.status.heirline").buffer_picker(
@@ -71,32 +70,19 @@ return {
           desc = "Close buffer from tabline",
         },
 
-        -- Quick save
-        ["<Leader>w"] = { "<cmd>w<cr>", desc = "Save file" },
+        -- toggle between source/header files (clangd)
+        ["gH"] = { "<Cmd>ClangdSwitchSourceHeader<CR>", desc = "Switch source/header" },
 
-        -- Better window navigation
-        ["<C-h>"] = { "<C-w>h", desc = "Move to left window" },
-        ["<C-j>"] = { "<C-w>j", desc = "Move to lower window" },
-        ["<C-k>"] = { "<C-w>k", desc = "Move to upper window" },
-        ["<C-l>"] = { "<C-w>l", desc = "Move to right window" },
+        -- LSP symbol search
+        ["<Leader>fs"] = { "<Cmd>Telescope lsp_document_symbols<CR>", desc = "Find symbols (document)" },
+        ["<Leader>fS"] = { "<Cmd>Telescope lsp_dynamic_workspace_symbols<CR>", desc = "Find symbols (workspace)" },
 
-        -- Quickfix navigation (useful for grep results)
-        ["]q"] = { "<cmd>cnext<cr>zz", desc = "Next quickfix" },
-        ["[q"] = { "<cmd>cprev<cr>zz", desc = "Prev quickfix" },
+        -- tables with just a `desc` key will be registered with which-key if it's installed
+        -- this is useful for naming menus
+        -- ["<Leader>b"] = { desc = "Buffers" },
 
-        -- Trouble integration
-        ["<Leader>xx"] = { "<cmd>Trouble diagnostics toggle<cr>", desc = "Diagnostics (Trouble)" },
-        ["<Leader>xX"] = { "<cmd>Trouble diagnostics toggle filter.buf=0<cr>", desc = "Buffer diagnostics" },
-        ["<Leader>xL"] = { "<cmd>Trouble loclist toggle<cr>", desc = "Location list" },
-        ["<Leader>xQ"] = { "<cmd>Trouble qflist toggle<cr>", desc = "Quickfix list" },
-
-        -- Project root detection (snacks.nvim picker in v5)
-        ["<Leader>fp"] = { function() Snacks.picker.files { cwd = vim.fn.getcwd() } end, desc = "Find files in project" },
-      },
-      v = {
-        -- Stay in visual mode when indenting
-        ["<"] = { "<gv", desc = "Unindent line" },
-        [">"] = { ">gv", desc = "Indent line" },
+        -- setting a mapping to false will disable it
+        -- ["<C-S>"] = false,
       },
     },
   },

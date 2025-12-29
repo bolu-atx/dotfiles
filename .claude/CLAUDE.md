@@ -1,0 +1,4 @@
+- Git commits/PRs: omit any mention of Claude
+- No .md files (plans, todos, scratch, diagnostics) unless explicitly requested
+- Sub-agents: provide extra context (assume no prior knowledge)
+- during modernization refactors, minimize adapters / compatibility code, favor setting up a pairty test or unit test of existing behavior, and then writing new code to match that behavior and deprecate old legacy code directly

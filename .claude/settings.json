@@ -1,0 +1,57 @@
+{
+  "permissions": {
+    "allow": [
+      "WebSearch",
+      "WebFetch(domain:www.anthropic.com)",
+      "WebFetch(domain:arize.com)",
+      "Bash(invoke test:*)",
+      "Bash(cat:*)",
+      "Bash(./build_v2/aarch64-release/tests/smoke:*)",
+      "Bash(KINTEK_SMOKE_DATA_DIR=/Users/blu/Repos/explorer-epic-ztl-sunset/tests/data/kintek KINTEK_EXAMPLES_DIR=/Users/blu/Repos/explorer-epic-ztl-sunset/src/plug_kintek/_kin/examples KINTEK_TRACE_SILENT=1 ./build_v2/aarch64-release/tests/smoke:*)",
+      "Bash(grep:*)",
+      "Bash(invoke compile:*)",
+      "Bash(./build_v2/aarch64-release/tests/unit:*)",
+      "Bash(ninja -C /Users/blu/Repos/explorer-epic-ztl-sunset/build_v2/aarch64-release tests/unit:*)",
+      "Bash(ninja -C build_v2/aarch64-release tests/unit:*)",
+      "Bash(KINTEK_SMOKE_DATA_DIR=/Users/blu/Repos/explorer-epic-ztl-sunset/tests/data/kintek KINTEK_EXAMPLES_DIR=/Users/blu/Repos/explorer-epic-ztl-sunset/src/plug_kintek/_kin/examples KINTEK_TRACE_SILENT=1 ./build_v2/aarch64-release/tests/unit:*)",
+      "Bash(ninja -C build_v2/aarch64-release tests/smoke:*)",
+      "Bash(find:*)",
+      "Bash(ninja -C build_v2/aarch64-release tests/parity:*)",
+      "Bash(KINTEK_SMOKE_DATA_DIR=/Users/blu/Repos/explorer-epic-ztl-sunset/tests/data/kintek KINTEK_EXAMPLES_DIR=/Users/blu/Repos/explorer-epic-ztl-sunset/src/plug_kintek/_kin/examples KINTEK_TRACE_SILENT=1 ./build_v2/aarch64-release/tests/parity:*)",
+      "Bash(wc:*)",
+      "Bash(git push:*)",
+      "Bash(ls:*)",
+      "Bash(KINTEK_SMOKE_DATA_DIR=/Users/blu/Repos/explorer-epic-ztl-sunset/tests/data/kintek KINTEK_EXAMPLES_DIR=/Users/blu/Repos/explorer-epic-ztl-sunset/src/plug_kintek/_kin/examples KINTEK_TRACE_SILENT=1 ./build_v2/aarch64-debug/tests/parity:*)",
+      "Bash(ninja:*)",
+      "Bash(KINTEK_SMOKE_DATA_DIR=/Users/blu/Repos/explorer-epic-ztl-sunset/tests/data/kintek KINTEK_EXAMPLES_DIR=/Users/blu/Repos/explorer-epic-ztl-sunset/src/plug_kintek/_kin/examples KINTEK_TRACE_SILENT=1 ./build_v2/aarch64-debug/tests/smoke:*)",
+      "Bash(KINTEK_TRACE_SILENT=1 ./build_v2/aarch64-release/tests/unit:*)",
+      "Bash(KINTEK_SMOKE_DATA_DIR=/Users/blu/Repos/explorer-epic-ztl-sunset/tests/data/kintek KINTEK_EXAMPLES_DIR=/Users/blu/Repos/explorer-epic-ztl-sunset/src/plug_kintek/_kin/examples KINTEK_TRACE_SILENT=1 lldb:*)",
+      "Bash(for i in 1 2 3)",
+      "Bash(do echo \"=== Run $i ===\")",
+      "Bash(done)",
+      "Bash(KINTEK_TRACE_SILENT=1 ./build_v2/aarch64-release/tests/parity:*)",
+      "Bash(./build_v2/aarch64-release/tests/parity:*)",
+      "Bash(KINTEK_SMOKE_DATA_DIR=/Users/blu/Repos/explorer-epic-ztl-sunset/tests/data/kintek KINTEK_TRACE_SILENT=1 ./build_v2/aarch64-release/tests/unit:*)",
+      "Bash(KINTEK_SMOKE_DATA_DIR=/Users/blu/Repos/explorer-epic-ztl-sunset/tests/data/kintek KINTEK_TRACE_SILENT=1 ./build_v2/aarch64-release/tests/parity:*)",
+      "Bash(KINTEK_SMOKE_DATA_DIR=/Users/blu/Repos/explorer-epic-ztl-sunset/tests/data/kintek KINTEK_TRACE_SILENT=1 ./build_v2/aarch64-release/tests/smoke:*)"
+    ],
+    "deny": [],
+    "ask": [],
+    "defaultMode": "default"
+  },
+  "statusLine": {
+    "type": "command",
+    "command": "bash -c 'input=$(cat); cwd=$(echo \"$input\" | jq -r \".workspace.current_dir\"); model=$(echo \"$input\" | jq -r \".model.display_name\"); total_in=$(echo \"$input\" | jq -r \".context_window.total_input_tokens // 0\"); total_out=$(echo \"$input\" | jq -r \".context_window.total_output_tokens // 0\"); ctx_size=$(echo \"$input\" | jq -r \".context_window.context_window_size // 200000\"); cd \"$cwd\" 2>/dev/null; branch=$(git -c core.commitGraph=false -c gc.auto=0 branch --show-current 2>/dev/null || echo \"no-git\"); total_tokens=$((total_in + total_out)); if [ $ctx_size -gt 0 ]; then pct=$((total_tokens * 100 / ctx_size)); else pct=0; fi; ctx=\"${pct}% (${total_tokens}/${ctx_size})\"; printf \"\\033[36m%s\\033[0m │ \\033[33m%-30s\\033[0m │ \\033[32m%s\\033[0m │ \\033[35m%s\\033[0m\" \"$model\" \"${cwd/#$HOME/~}\" \"$branch\" \"$ctx\"'"
+  },
+  "enabledPlugins": {
+    "claude-md-reflect@robbyt-claude-skills": true,
+    "gemini@robbyt-claude-skills": true,
+    "gh-cli@robbyt-claude-skills": true,
+    "claude-mem@thedotmack": false,
+    "clangd-lsp@claude-plugins-official": true,
+    "commit-commands@claude-plugins-official": true,
+    "frontend-design@claude-plugins-official": true,
+    "feature-dev@claude-plugins-official": true
+  },
+  "alwaysThinkingEnabled": true
+}
