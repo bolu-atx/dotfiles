@@ -73,9 +73,19 @@ return {
         -- toggle between source/header files (clangd)
         ["gH"] = { "<Cmd>ClangdSwitchSourceHeader<CR>", desc = "Switch source/header" },
 
-        -- LSP symbol search
-        ["<Leader>fs"] = { "<Cmd>Telescope lsp_document_symbols<CR>", desc = "Find symbols (document)" },
-        ["<Leader>fS"] = { "<Cmd>Telescope lsp_dynamic_workspace_symbols<CR>", desc = "Find symbols (workspace)" },
+        -- LSP workspace symbols (override to use snacks picker)
+        ["<Leader>lG"] = { function() Snacks.picker.lsp_workspace_symbols() end, desc = "Workspace symbols" },
+
+        -- yank helpers
+        ["<Leader>y"] = { desc = "Yank" },
+        ["<Leader>yp"] = {
+          function()
+            local path = vim.fn.expand "%:." .. ":" .. vim.fn.line "."
+            vim.fn.setreg("+", path)
+            vim.notify("Copied: " .. path)
+          end,
+          desc = "Yank file:line",
+        },
 
         -- tables with just a `desc` key will be registered with which-key if it's installed
         -- this is useful for naming menus
